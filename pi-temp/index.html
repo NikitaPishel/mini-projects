@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temps</title>
+</head>
+<body>
+    <div>
+        <canvas type="module" id="graph"></canvas>
+    </div>
+    
+    <p1 type="module" id="t"></p1>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    const chartCanv = document.getElementById("graph")
+    const output = document.getElementById("t")
+        
+    const temps = []
+    setInterval(async ()=>{
+        const response = await fetch("/data")
+        const data = await response.text()
+        const text = data.substring(5,data.length-3)
+        if (temps.length>=50) {
+            temps.shift()
+        }
+        temps.push(text)
+        output.innerText = temps
+        
+                        
+        const chartLabels = Array.from({length: 50}, (_, i) => i + 1);
+        // console.log(chartLabels)
+
+        const chartData = {
+            labels: chartLabels,
+            datasets: [{
+                label: "CPU temp",
+                data: temps,
+                borderColor: "rgb(255, 180, 90)",
+                borderWidth: 2,
+                tension: 0.5
+            }]
+        }
+        
+        const tempChart = new Chart(chartCanv, {
+            type: 'line',
+            data: chartData,
+        })
+    }, 1000)
+        </script>
+</body>
+</html>

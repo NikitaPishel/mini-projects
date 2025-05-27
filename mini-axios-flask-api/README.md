@@ -1,0 +1,2 @@
+# Mini flask-axios API
+This is a mini project that does a request from axios to flask server. All it does is axios client asks for server status, and if server is active it returns a JSONified status "OK, server is running."
